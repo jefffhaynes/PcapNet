@@ -14,19 +14,24 @@ namespace Pcap
 
         public PcapSerializer()
         {
-            _serializer.MemberDeserialized += (sender, args) =>
-            {
-                if (args.MemberName == "MagicNumber")
-                {
-                    var endiannessMagic = Convert.ToUInt32(args.Value);
+            _serializer.MemberDeserialized += SerializerOnMemberDeserialized;
+        }
 
-                    if (endiannessMagic == LittleEndiannessMagic)
-                        _serializer.Endianness = Endianness.Little;
-                    else if (endiannessMagic == BigEndiannessMagic)
-                        throw new NotSupportedException("Big endian files not supported");
-                    else throw new InvalidDataException($"Endianness value {endiannessMagic} is not valid");
-                }
-            };
+        private void SerializerOnMemberDeserialized(object sender, MemberSerializedEventArgs memberSerializedEventArgs)
+        {
+            if (memberSerializedEventArgs.MemberName == "MagicNumber")
+            {
+                var endiannessMagic = Convert.ToUInt32(memberSerializedEventArgs.Value);
+
+                if (endiannessMagic == LittleEndiannessMagic)
+                    _serializer.Endianness = Endianness.Little;
+                else if (endiannessMagic == BigEndiannessMagic)
+                    throw new NotSupportedException("Big endian files not supported");
+                else throw new InvalidDataException($"Endianness value {endiannessMagic} is not valid");
+
+                // disconnect for performance
+                Serializer.MemberDeserialized -= SerializerOnMemberDeserialized;
+            }
         }
 
         public void Serialize(Stream stream, Pcap pcap)

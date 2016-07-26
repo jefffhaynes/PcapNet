@@ -14,17 +14,17 @@ namespace PcapNet.Test
         [TestMethod]
         public void RoundtripFiles()
         {
-            // TODO
+            RoundtripFiles("Files");
         }
 
         private void RoundtripFiles(string path, bool ignoreSerializationErrors = false)
         {
             var serializer = new PcapSerializer();
 
-            serializer.Serializer.MemberSerializing += OnMemberSerializing;
-            serializer.Serializer.MemberSerialized += OnMemberSerialized;
-            serializer.Serializer.MemberDeserializing += OnMemberDeserializing;
-            serializer.Serializer.MemberDeserialized += OnMemberDeserialized;
+            //serializer.Serializer.MemberSerializing += OnMemberSerializing;
+            //serializer.Serializer.MemberSerialized += OnMemberSerialized;
+            //serializer.Serializer.MemberDeserializing += OnMemberDeserializing;
+            //serializer.Serializer.MemberDeserialized += OnMemberDeserialized;
 
             var files = Directory.EnumerateFiles(path);
 
