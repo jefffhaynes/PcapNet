@@ -1,7 +1,7 @@
 ﻿using System;
 using BinarySerialization;
 
-namespace Pcap
+namespace PcapNet
 {
     public class Packet
     {

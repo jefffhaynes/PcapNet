@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using BinarySerialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Pcap;
 
 namespace PcapNet.Test
 {
