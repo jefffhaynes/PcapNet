@@ -5,7 +5,7 @@ namespace PcapNet
 {
     public class Packet
     {
-        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
+        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         [FieldOrder(0)]
         public uint TimestampSeconds { get; set; }
@@ -25,6 +25,6 @@ namespace PcapNet
 
         [Ignore]
         public DateTime Timestamp => Epoch + TimeSpan.FromSeconds(TimestampSeconds) +
-                                     TimeSpan.FromMilliseconds((double) TimestampMicroseconds/1000);
+                                     TimeSpan.FromTicks(TimestampMicroseconds * 10);
     }
 }

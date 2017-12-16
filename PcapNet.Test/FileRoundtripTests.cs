@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using BinarySerialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,19 +12,21 @@ namespace PcapNet.Test
     public class FileRoundtripTests
     {
         [TestMethod]
-        public void RoundtripFiles()
+        public async Task RoundtripFilesAsync()
         {
-            RoundtripFiles("Files");
+            await RoundtripFilesAsync("Files");
         }
 
-        private void RoundtripFiles(string path, bool ignoreSerializationErrors = false)
+        private async Task RoundtripFilesAsync(string path, bool ignoreSerializationErrors = false)
         {
             var serializer = new PcapSerializer();
 
-            //serializer.Serializer.MemberSerializing += OnMemberSerializing;
-            //serializer.Serializer.MemberSerialized += OnMemberSerialized;
-            //serializer.Serializer.MemberDeserializing += OnMemberDeserializing;
-            //serializer.Serializer.MemberDeserialized += OnMemberDeserialized;
+//#if DEBUG
+//            serializer.Serializer.MemberSerializing += OnMemberSerializing;
+//            serializer.Serializer.MemberSerialized += OnMemberSerialized;
+//            serializer.Serializer.MemberDeserializing += OnMemberDeserializing;
+//            serializer.Serializer.MemberDeserialized += OnMemberDeserialized;
+//#endif 
 
             var files = Directory.EnumerateFiles(path);
 
@@ -33,12 +36,12 @@ namespace PcapNet.Test
 
                 using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read))
                 {
-                    var pcap = serializer.Deserialize(stream);
+                    var pcap = await serializer.DeserializeAsync(stream);
 
                     try
                     {
                         var memStream = new MemoryStream();
-                        serializer.Serialize(memStream, pcap);
+                        await serializer.SerializeAsync(memStream, pcap);
 
                         stream.Position = 0;
                         memStream.Position = 0;
@@ -86,6 +89,8 @@ namespace PcapNet.Test
             }
         }
 
+#if DEBUG
+
         private static void PrintIndent(int depth)
         {
             var indent = new string(Enumerable.Repeat(' ', depth * 4).ToArray());
@@ -123,5 +128,8 @@ namespace PcapNet.Test
 
             Debug.WriteLine("D-End: {0} ({1}) @ {2}", e.MemberName, value, e.Offset);
         }
+
+#endif
+
     }
 }

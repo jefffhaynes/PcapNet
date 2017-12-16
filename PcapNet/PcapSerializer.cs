@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using BinarySerialization;
 
 namespace PcapNet
@@ -7,14 +8,14 @@ namespace PcapNet
     {
         public BinarySerializer Serializer { get; } = new BinarySerializer();
 
-        public void Serialize(Stream stream, PcapNet.Pcap pcap)
+        public Task SerializeAsync(Stream stream, Pcap pcap)
         {
-            Serializer.Serialize(stream, pcap);
+            return Serializer.SerializeAsync(stream, pcap);
         }
 
-        public PcapNet.Pcap Deserialize(Stream stream)
+        public Task<Pcap> DeserializeAsync(Stream stream)
         {
-            return Serializer.Deserialize<PcapNet.Pcap>(stream);
+            return Serializer.DeserializeAsync<Pcap>(stream);
         }
     }
 }
