@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <LangVersion>latest</LangVersion>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>PcapNet</AssemblyName>
     <RootNamespace>PcapNet</RootNamespace>
@@ -16,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BinarySerializer" Version="7.8.0" />
+    <PackageReference Include="BinarySerializer" Version="8.6.2.2" />
   </ItemGroup>
 
 </Project>
