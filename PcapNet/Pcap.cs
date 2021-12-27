@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
-using BinarySerialization;
+﻿namespace PcapNet;
 
-namespace PcapNet
+public class Pcap
 {
-    public class Pcap
-    {
-        [FieldOrder(0)]
-        public GlobalHeader Header { get; set; }
+    [FieldOrder(0)]
+    public GlobalHeader Header { get; set; }
 
-        [FieldOrder(1)]
-        [FieldEndianness("Header.MagicNumber", typeof(EndiannessConverter))]
-        public List<Packet> Packets { get; set; } 
-    }
+    [FieldOrder(1)]
+    [FieldEndianness("Header.MagicNumber", typeof(EndiannessConverter))]
+    public List<Packet> Packets { get; set; }
 }

@@ -1,31 +1,24 @@
-﻿using System;
-using BinarySerialization;
+﻿namespace PcapNet;
 
-namespace PcapNet
+public class EndiannessConverter : IValueConverter
 {
-    public class EndiannessConverter : IValueConverter
+    public const uint LittleEndiannessMagic = 0xa1b2c3d4;
+    public const uint BigEndiannessMagic = 0xd4c3b2a1;
+
+    public object Convert(object value, object parameter, BinarySerializationContext context)
     {
-        public const uint LittleEndiannessMagic = 0xa1b2c3d4;
-        public const uint BigEndiannessMagic = 0xd4c3b2a1;
+        var indicator = System.Convert.ToUInt32(value);
 
-        public object Convert(object value, object parameter, BinarySerializationContext context)
+        return indicator switch
         {
-            var indicator = System.Convert.ToUInt32(value);
+            LittleEndiannessMagic => Endianness.Little,
+            BigEndiannessMagic => Endianness.Big,
+            _ => throw new InvalidOperationException("Invalid endian magic"),
+        };
+    }
 
-            switch (indicator)
-            {
-                case LittleEndiannessMagic:
-                    return Endianness.Little;
-                case BigEndiannessMagic:
-                    return Endianness.Big;
-                default:
-                    throw new InvalidOperationException("Invalid endian magic");
-            }
-        }
-
-        public object ConvertBack(object value, object parameter, BinarySerializationContext context)
-        {
-            throw new NotSupportedException();
-        }
+    public object ConvertBack(object value, object parameter, BinarySerializationContext context)
+    {
+        throw new NotSupportedException();
     }
 }

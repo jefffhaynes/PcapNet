@@ -1,21 +1,16 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using BinarySerialization;
+﻿namespace PcapNet;
 
-namespace PcapNet
+public class PcapSerializer
 {
-    public class PcapSerializer
+    public BinarySerializer Serializer { get; } = new BinarySerializer();
+
+    public Task SerializeAsync(Stream stream, Pcap pcap)
     {
-        public BinarySerializer Serializer { get; } = new BinarySerializer();
+        return Serializer.SerializeAsync(stream, pcap);
+    }
 
-        public Task SerializeAsync(Stream stream, Pcap pcap)
-        {
-            return Serializer.SerializeAsync(stream, pcap);
-        }
-
-        public Task<Pcap> DeserializeAsync(Stream stream)
-        {
-            return Serializer.DeserializeAsync<Pcap>(stream);
-        }
+    public Task<Pcap> DeserializeAsync(Stream stream)
+    {
+        return Serializer.DeserializeAsync<Pcap>(stream);
     }
 }
